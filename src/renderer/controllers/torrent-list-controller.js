@@ -191,11 +191,18 @@ module.exports = class TorrentListController {
     }
   }
 
-  confirmDeleteTorrent (infoHash, deleteData) {
-    this.state.modal = {
-      id: 'remove-torrent-modal',
+  showDeleteTorrentSnackbar (infoHash, magnetURI) {
+    this.state.snackbar = {
+      id: 'remove-torrent-snackbar',
       infoHash,
-      deleteData
+      magnetURI
+    }
+  }
+
+  confirmDeleteTorrentAndData (infoHash) {
+    this.state.modal = {
+      id: 'remove-torrent-data-modal',
+      infoHash
     }
   }
 
@@ -251,12 +258,12 @@ module.exports = class TorrentListController {
 
     menu.append(new remote.MenuItem({
       label: 'Remove From List',
-      click: () => dispatch('confirmDeleteTorrent', torrentSummary.infoHash, false)
+      click: () => dispatch('showDeleteTorrentSnackbar', torrentSummary.infoHash)
     }))
 
     menu.append(new remote.MenuItem({
       label: 'Remove Data File',
-      click: () => dispatch('confirmDeleteTorrent', torrentSummary.infoHash, true)
+      click: () => dispatch('confirmDeleteTorrentAndData', torrentSummary.infoHash)
     }))
 
     menu.append(new remote.MenuItem({
